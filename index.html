@@ -1,0 +1,222 @@
+<!-- This tells the browser that the document is written in HTML5 -->
+<!DOCTYPE html>
+
+<!-- The <html> tag wraps the entire webpage. 'lang="en"' means the page is in English -->
+<html lang="en">
+
+<head>
+    <!-- This helps the browser display letters and symbols correctly -->
+    <meta charset="UTF-8">
+
+    <!-- This sets the name of the page that appears in the browser tab -->
+    <title>My School Website</title>
+
+    <!-- The <style> tag is used to write CSS (design rules) inside HTML -->
+    <style>
+        /* The body tag styles everything on the page */
+        body {
+            font-family: Arial, sans-serif; /* Sets the text style */
+            background-color: #f0f8ff; /* Light blue background color */
+            text-align: center; /* Centers all the text */
+            padding: 20px; /* Adds space around the content */
+        }
+
+        /* h1 is the biggest heading on the page */
+        h1 {
+            color: #2e8b57; /* Makes the heading green */
+        }
+
+        /* .container is a box that holds all the content neatly */
+        .container {
+            background-color: #ffffff; /* White background */
+            padding: 20px; /* Space inside the box */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow around the box */
+            max-width: 700px; /* Maximum width of the box */
+            margin: auto; /* Centers the box on the page */
+        }
+
+        /* Styles for all images */
+        img {
+            max-width: 150px; /* Limits image size */
+            border-radius: 10px; /* Rounds image corners */
+            margin: 10px; /* Adds space around the image */
+        }
+
+        /* Styles for input boxes and text areas */
+        input, textarea {
+            margin-top: 10px; /* Adds space above the box */
+            width: 90%; /* Makes the box wide */
+            padding: 10px; /* Adds space inside the box */
+            border-radius: 5px; /* Rounds the corners */
+            border: 1px solid #ccc; /* Light grey border */
+            font-size: 16px; /* Sets text size */
+        }
+
+        /* Styles for the essay writing box */
+        textarea {
+            height: 150px; /* Makes the box tall */
+            resize: vertical; /* Allows the box to grow up and down */
+        }
+
+        /* Styles for buttons */
+        button {
+            margin-top: 10px; /* Space above the button */
+            padding: 10px 20px; /* Space inside the button */
+            background-color: #2e8b57; /* Green background */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Changes mouse to hand when hovering */
+        }
+
+        /* Styles for the footer at the bottom */
+        footer {
+            margin-top: 30px; /* Space above the footer */
+            padding: 10px; /* Space inside the footer */
+            background-color: #2e8b57; /* Green background */
+            color: white; /* White text */
+            font-size: 14px; /* Smaller text size */
+            border-radius: 5px; /* Rounded corners */
+        }
+    </style>
+</head>
+
+<!-- The body tag contains everything that shows on the page -->
+<body>
+
+    <!-- Main heading of the page -->
+    <h1>Welcome to Olan Academy Summer Coaching Website</h1>
+
+    <!-- This box holds all the content neatly -->
+    <div class="container">
+
+        <!-- Section to upload school logo -->
+        <h2>Upload Your School Logo</h2>
+        <!-- input type="file" lets you choose a file from your computer -->
+        <!-- accept="image/*" means only image files are allowed -->
+        <!-- onchange runs a function when the file is selected -->
+        <input type="file" accept="image/*" onchange="previewLogo(event)">
+        <br>
+        <!-- This image tag will show the uploaded logo -->
+        <img id="schoolLogo" alt="School Logo Preview">
+
+        <!-- Section to upload student photo -->
+        <h2>Upload Your Picture</h2>
+        <input type="file" accept="image/*" onchange="previewPhoto(event)">
+        <br>
+        <img id="studentPhoto" alt="Your Photo Preview">
+
+        <!-- Section to write an essay -->
+        <h2>Write Your Essay</h2>
+        <!-- input type="text" is a small box for the essay heading -->
+        <input type="text" id="essayTitle" placeholder="Enter your essay heading">
+        <br>
+        <!-- textarea is a big box for writing the essay body -->
+        <textarea id="essayBody" placeholder="Write your essay here..."></textarea>
+        <br>
+
+        <!-- Button to show the essay in a pop-up -->
+        <button onclick="submitEssay()">Submit Essay</button>
+
+        <!-- Button to save the essay and images -->
+        <button onclick="saveEssay()">Save Essay & Images</button>
+
+        <!-- Button to delete everything -->
+        <button onclick="deleteAll()">Delete Essay & Images</button>
+
+        <!-- A short message for students -->
+        <p>This website is designed to help JSS1 students learn HTML in a fun and easy way!</p>
+    </div>
+
+    <!-- Footer at the bottom of the page -->
+    <footer>
+        Designed by Ibrahim
+    </footer>
+
+    <!-- JavaScript section: makes the page interactive -->
+    <script>
+        // This function shows the uploaded school logo and saves it
+        function previewLogo(event) {
+            const logo = document.getElementById('schoolLogo'); // Finds the logo image
+            const file = event.target.files[0]; // Gets the uploaded file
+            const reader = new FileReader(); // Creates a file reader
+
+            // When the file is read, show it and save it
+            reader.onload = function(e) {
+                logo.src = e.target.result; // Shows the image
+                localStorage.setItem('savedLogo', e.target.result); // Saves the image
+            };
+            reader.readAsDataURL(file); // Reads the image as base64 text
+        }
+
+        // This function shows the uploaded student photo and saves it
+        function previewPhoto(event) {
+            const photo = document.getElementById('studentPhoto');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                photo.src = e.target.result;
+                localStorage.setItem('savedPhoto', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // This function shows the essay in a pop-up message
+        function submitEssay() {
+            const title = document.getElementById('essayTitle').value; // Gets the heading
+            const body = document.getElementById('essayBody').value; // Gets the body
+
+            // If both heading and body are filled, show the essay
+            if (title && body) {
+                alert("Essay submitted successfully!\n\nTitle: " + title + "\n\nBody:\n" + body);
+            } else {
+                alert("Please fill in both the heading and the essay body.");
+            }
+        }
+
+        // This function saves the essay and images to the browser
+        function saveEssay() {
+            const title = document.getElementById('essayTitle').value;
+            const body = document.getElementById('essayBody').value;
+
+            localStorage.setItem('savedTitle', title); // Saves heading
+            localStorage.setItem('savedBody', body); // Saves body
+
+            alert("Your essay and images have been saved!");
+        }
+
+        // This function deletes all saved content
+        function deleteAll() {
+            localStorage.removeItem('savedTitle'); // Deletes heading
+            localStorage.removeItem('savedBody'); // Deletes body
+            localStorage.removeItem('savedLogo'); // Deletes logo
+            localStorage.removeItem('savedPhoto'); // Deletes photo
+
+            // Clears the boxes and images
+            document.getElementById('essayTitle').value = '';
+            document.getElementById('essayBody').value = '';
+            document.getElementById('schoolLogo').src = '';
+            document.getElementById('studentPhoto').src = '';
+
+            alert("All content has been deleted.");
+        }
+
+        // This runs when the page opens and loads saved content
+        window.onload = function() {
+            const savedTitle = localStorage.getItem('savedTitle');
+            const savedBody = localStorage.getItem('savedBody');
+            const savedLogo = localStorage.getItem('savedLogo');
+            const savedPhoto = localStorage.getItem('savedPhoto');
+
+            // If saved content exists, show it
+            if (savedTitle) document.getElementById('essayTitle').value = savedTitle;
+            if (savedBody) document.getElementById('essayBody').value = savedBody;
+            if (savedLogo) document.getElementById('schoolLogo').src = savedLogo;
+            if (savedPhoto) document.getElementById('studentPhoto').src = savedPhoto;
+        }
+    </script>
+
+</body>
+</html>
